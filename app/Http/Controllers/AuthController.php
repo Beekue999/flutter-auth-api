@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -9,33 +12,25 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
-
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        // Send email verification notification
+        $user->sendEmailVerificationNotification();
+
         return response()->json([
             'token' => $user->createToken('flutter')->plainTextToken,
-            'user'  => $user,
+            'user'  => new UserResource($user),
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required',
-        ]);
-
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
@@ -46,7 +41,7 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $user->createToken('flutter')->plainTextToken,
-            'user'  => $user,
+            'user'  => new UserResource($user),
         ]);
     }
 
@@ -58,6 +53,6 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json(new UserResource($request->user()));
     }
 }

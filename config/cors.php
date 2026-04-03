@@ -19,9 +19,18 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [
+        'http://localhost',
+        'http://127.0.0.1',
+        'http://172.20.10.3',
+        // Add Flutter debug origin if different from above
+    ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '#^http://172\.20\.10\.\d+:[0-9]+$#',  // Flutter debug bridge
+        '#^http://localhost:[0-9]+$#',
+        '#^http://127\.0\.0\.1:[0-9]+$#',
+    ],
 
     'allowed_headers' => ['*'],
 
@@ -29,6 +38,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,  // Enable for stateful API requests
 
 ];

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function users(Request $request)
+    public function index(Request $request)
     {
         if (!$request->user()->is_admin) {
             return response()->json(['message' => 'Forbidden'], 403);
