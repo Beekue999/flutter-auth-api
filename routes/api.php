@@ -51,7 +51,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         // Auth
         Route::post('/logout',         [AuthController::class, 'logout']);
-        Route::get('/me',              [AuthController::class, 'user']);
+        Route::get('/me',              [AuthController::class, 'me']);
 
         // Profile
         Route::put('/profile',         [ProfileController::class, 'update']);
@@ -74,3 +74,4 @@ Route::prefix('v1')->group(function () {
         Route::get('/firebase/collection/{collection}', [FirebaseController::class, 'showCollection']);
     });
 });
+

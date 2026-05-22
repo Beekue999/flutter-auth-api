@@ -1,13 +1,24 @@
 <?php
 
+// ບອກ Laravel ວ່າ Controller ນີ້ຢູ່ໃນ Folder ໃດ
 namespace App\Http\Controllers;
 
+// ຮັບຂໍ້ມູນຈາກ HTTP Request (ຂໍ້ມູນທີ່ Flutter ສົ່ງມາ)
 use Illuminate\Http\Request;
+
+// ໃຊ້ສຳລັບເຂົ້າລະຫັດ ແລະ ກວດສອບ Password
 use Illuminate\Support\Facades\Hash;
+
+// ໃຊ້ສຳລັບໂຍນ Error ເມື່ອຂໍ້ມູນຜິດພາດ
 use Illuminate\Validation\ValidationException;
 
+// Controller ຈັດການຂໍ້ມູນ Profile ຂອງ User
 class ProfileController extends Controller
 {
+    /**
+     * ອັບເດດຂໍ້ມູນ Profile (ຊື່ ແລະ ອີເມວ)
+     * PUT /api/v1/profile
+     */
     public function update(Request $request)
     {
         $request->validate([

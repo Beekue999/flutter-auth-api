@@ -39,5 +39,5 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => true,  // Enable for stateful API requests
-
+    
 ];
